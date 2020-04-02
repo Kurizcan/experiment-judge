@@ -12,18 +12,13 @@ public class UserSqlProvider {
     public static final String table = "tb_user_info";
 
     public String insertUser(User user) {
-        return new SQL(){{
-            UPDATE(table);
-            SET("password = #{password}");
-            SET("name = #{name}");
-            SET("type = #{type}");
-            SET("classId = #{classId}");
-            SET("gradeId = #{gradeId}");
-            SET("major = #{major}");
-        }}.toString();
+        return new SQL().INSERT_INTO(table)
+                 .VALUES("name, password, type, classId, gradeId, major",
+                         "#{name}, #{password}, #{type}, #{classId}, #{gradeId}, #{major}")
+                 .toString();
     }
 
-    public String getUserByName(String name) {
+    public String getUserByName() {
         return new SQL()
                 .SELECT("*")
                 .FROM(table)

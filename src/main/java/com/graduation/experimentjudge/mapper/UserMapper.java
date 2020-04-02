@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.SelectProvider;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,8 +17,8 @@ import org.springframework.stereotype.Component;
 public interface UserMapper {
 
     @InsertProvider(type = UserSqlProvider.class, method = "insertUser")
-    @Options(useGeneratedKeys = true, keyProperty = "user.id", keyColumn = "id")
-    public boolean addUser(@Param("user") User user);
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    public boolean addUser(User user);
 
     @SelectProvider(type = UserSqlProvider.class, method = "getUserByName")
     public User getUserByName(@Param("name") String name);

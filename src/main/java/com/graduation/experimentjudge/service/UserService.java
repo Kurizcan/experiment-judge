@@ -4,7 +4,6 @@ import com.graduation.experimentjudge.bean.User;
 import com.graduation.experimentjudge.config.auth.Authentication;
 import com.graduation.experimentjudge.mapper.UserMapper;
 import com.graduation.experimentjudge.util.BcryptUtil;
-import com.graduation.experimentjudge.util.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +21,14 @@ public class UserService {
     Authentication authentication;
 
 
-    public int register(User user) {
+    public User register(User user) {
         String password = BcryptUtil.encode(user.getPassword());
         user.setPassword(password);
         boolean flag = userMapper.addUser(user);
         if (!flag) {
-            return ResultCode.UPDATE_OR_INSERT_DATA_FAIL.getCode();
+            return null;
         }
-        return user.getId();
+        return user;
     }
 
     public String login(String name, String password) {
@@ -38,6 +37,8 @@ public class UserService {
             return null;
         }
         // 获取 token 并设置 cookie
+        System.out.println("id:" + user.getId());
+        System.out.println("type:" + user.getType());
         String token = authentication.createToken(user);
         return token;
     }

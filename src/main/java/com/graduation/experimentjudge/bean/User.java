@@ -28,6 +28,10 @@ public class User {
      */
     String classId;
     /**
+     * 年级
+     */
+    String gradeId;
+    /**
      * 专业
      */
     String major;

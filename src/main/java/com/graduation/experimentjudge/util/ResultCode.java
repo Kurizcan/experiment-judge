@@ -15,6 +15,10 @@ public enum ResultCode {
      */
     UN_AUTHORIZATION(401),
     /**
+     * 登陆失败
+     */
+    LOGIN_FAIL(402),
+    /**
      * 更新、插入失败
      */
     UPDATE_OR_INSERT_DATA_FAIL(402),

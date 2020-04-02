@@ -8,6 +8,7 @@ import com.graduation.experimentjudge.util.RequestHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,13 +32,14 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         }
         HandlerMethod handlerMethod = (HandlerMethod) object;
         Method method = handlerMethod.getMethod();
-        // 验证是否过期
-        if (!authentication.validToken(token)) {
+        // 验证是否有效或者过期
+        if (token != null && !authentication.validToken(token)) {
             return false;
         }
         //检查权限
         if (method.isAnnotationPresent(Teacher.class) && Constant.TYPE_TEACHER != authentication.getTypeFormToken(token)) {
             // 权限不足，401
+            System.out.println("no teacher");
             return false;
         }
         if (method.isAnnotationPresent(Student.class) && Constant.TYPE_STUDENT != authentication.getTypeFormToken(token)) {
@@ -47,5 +49,13 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
     }
 }
